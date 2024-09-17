@@ -1,5 +1,6 @@
 package pages;
 
+import dto.UserDto;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -34,6 +35,12 @@ public class LoginPage extends BasePage{
         inputPassword.sendKeys(password);
         return this;
     }
+    public LoginPage typeLoginForm(UserDto user){
+        //inputEmail.clear();
+        inputEmail.sendKeys(user.getEmail());
+        inputPassword.sendKeys(user.getPassword());
+        return this;
+    }
 
     public ContactPage clickBtnLoginPositive(){
         btnLoginSubmit.click();
@@ -59,5 +66,13 @@ public class LoginPage extends BasePage{
     }
     public boolean isTextInElementPresent_errorMessage(){
         return isElementPresent(errorMessageLogin, "Login Failed with code 401");
+    }
+    public boolean isTextInElementPresent_errorMessage(String text){
+        return isElementPresent(errorMessageLogin, text);
+    }
+
+    public LoginPage clickBtnRegistrationNegative() {
+        btnRegistration.click();
+        return this;
     }
 }

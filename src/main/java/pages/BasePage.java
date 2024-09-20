@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -27,9 +28,14 @@ public class BasePage {
         return element.getText().contains(text);
     }
     public static <T extends BasePage> T clickButtonsOnHeader(HeaderMenuItem headerMenuItem){
-        WebElement element = new WebDriverWait(driver, Duration.ofSeconds(5))
-                .until(ExpectedConditions.elementToBeClickable(By.xpath(headerMenuItem.getLocator())));
-        element.click();
+        try {
+            WebElement element = new WebDriverWait(driver, Duration.ofSeconds(5))
+                    .until(ExpectedConditions.elementToBeClickable(By.xpath(headerMenuItem.getLocator())));
+            element.click();
+        }catch (TimeoutException exception){
+            exception.printStackTrace();
+            System.out.println("created exception");
+        }
         switch (headerMenuItem){
             case LOGIN -> {
                 return (T) new LoginPage(driver);

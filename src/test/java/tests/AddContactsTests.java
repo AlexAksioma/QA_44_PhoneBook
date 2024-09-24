@@ -86,4 +86,12 @@ public class AddContactsTests extends ApplicationManager {
                 .isAlertPresent(5))
         ;
     }
+    @Test(dataProvider = "addNewContactDPFile", dataProviderClass = DPAddContact.class)
+    public void addNewContactNegativeTest_wrongEmailDPFile(ContactDtoLombok contact) {
+        System.out.println("--> " + contact);
+        Assert.assertTrue(addPage.fillContactForm(contact)
+                .clickBtnSaveContactPositive()
+                .isAlertPresent(5))
+        ;
+    }
 }

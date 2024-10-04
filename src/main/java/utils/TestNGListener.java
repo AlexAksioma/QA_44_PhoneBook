@@ -1,11 +1,13 @@
 package utils;
 
+import org.openqa.selenium.TakesScreenshot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
+import static utils.TakeScreenShot.takeScreenShot;
 public class TestNGListener implements ITestListener {
 
     Logger logger = LoggerFactory.getLogger(TestNGListener.class);
@@ -26,6 +28,7 @@ public class TestNGListener implements ITestListener {
     public void onTestFailure(ITestResult result) {
         ITestListener.super.onTestFailure(result);
         logger.info("failed test --> " + result.getMethod());
+
     }
 
     @Override

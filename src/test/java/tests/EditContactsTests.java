@@ -3,6 +3,7 @@ package tests;
 import dto.ContactDtoLombok;
 import dto.UserDto;
 import manager.ApplicationManager;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.AddPage;
@@ -10,14 +11,19 @@ import pages.ContactPage;
 import pages.HomePage;
 import pages.LoginPage;
 import utils.HeaderMenuItem;
+import utils.RetryAnalyzer;
 
 import static pages.BasePage.clickButtonsOnHeader;
 import static utils.RandomUtils.*;
 import static utils.RandomUtils.generateString;
 
+import static utils.PropertiesReader.getProperty;
+
 public class EditContactsTests extends ApplicationManager {
 
-    UserDto user = new UserDto("qa_mail@mail.com", "Qwerty123!");
+    //UserDto user = new UserDto("qa_mail@mail.com", "Qwerty123!");
+    UserDto user = new UserDto(getProperty("data.properties","email"),
+            getProperty("data.properties","password"));
     ContactPage contactPage;
 
     @BeforeMethod
@@ -27,7 +33,7 @@ public class EditContactsTests extends ApplicationManager {
         contactPage = loginPage.typeLoginForm(user).clickBtnLoginPositive();
     }
 
-    @Test
+    @Test(retryAnalyzer = RetryAnalyzer.class)
     public void editContactPositiveTest(){
         ContactDtoLombok newContact = ContactDtoLombok.builder()
                 .name("new-"+generateString(5))
@@ -41,5 +47,6 @@ public class EditContactsTests extends ApplicationManager {
         contactPage.fillEditForm(newContact);
         contactPage.clickBtnSaveContact();
         ContactDtoLombok contact = contactPage.getContactFromDetailedCard();
+        Assert.assertEquals(newContact, contact);
     }
 }

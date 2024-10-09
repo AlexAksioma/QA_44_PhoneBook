@@ -106,13 +106,38 @@ public class ContactPage extends BasePage {
         inputEmail.sendKeys(newContact.getEmail());
         inputAddress.clear();
         inputAddress.sendKeys(newContact.getAddress());
-        //? description
+        inputDescription.clear();
+        inputDescription.sendKeys(newContact.getDescription());
     }
-    public void clickBtnSaveContact(){
+
+    public void clickBtnSaveContact() {
         btnSaveContact.click();
     }
 
     public ContactDtoLombok getContactFromDetailedCard() {
+        pause(3);
+        //System.out.println("name lastName --> " +contactCardNameLastName.getText());
+        //System.out.println("phone --> "+contactCardPhone.getText());
+        //System.out.println("email --> "+contactCardEmail.getText());
+        //System.out.println("address --> "+contactCardAddress.getText());
+        //System.out.println("desc --> "+contactCardDescription.getText());
 
+        String name = contactCardNameLastName.getText().split(" ")[0]; //new-n8k2u new-krq036xo9y
+        String lastName = contactCardNameLastName.getText().split(" ")[1];
+        String phone = contactCardPhone.getText().split("\n")[1];
+        String email = contactCardPhone.getText().split("\n")[2];
+        String address = contactCardPhone.getText().split("\n")[3];
+        String description = contactCardDescription.getText().split(": ")[1];
+
+        ContactDtoLombok contact = ContactDtoLombok.builder()
+                .name(name)
+                .lastName(lastName)
+                .phone(phone)
+                .address(address)
+                .email(email)
+                .description(description)
+                .build();
+        System.out.println(contact);
+        return contact;
     }
 }

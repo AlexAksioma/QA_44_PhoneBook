@@ -9,12 +9,15 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import java.io.IOException;
 
 import static utils.RandomUtils.*;
 
 public class RegistrationTests implements BaseApi {
+
+    SoftAssert softAssert = new SoftAssert();
 
     @Test
     public void registrationPositiveTest(){
@@ -49,9 +52,34 @@ public class RegistrationTests implements BaseApi {
         if(response.isSuccessful()){
             TokenDto token  = GSON.fromJson(response.body().string(), TokenDto.class);
             System.out.println(token.getToken());
+            Assert.assertEquals(response.code(), 200);
         }else {
             ErrorMessageDto errorMessage = GSON.fromJson(response.body().string(), ErrorMessageDto.class);
             System.out.println(errorMessage.getError());
+            Assert.fail("response code -->"+response.code());
         }
+    }
+
+    @Test
+    public void registrationNegativeTest_ExRes400() throws IOException {
+        UserDto user = new UserDto(generateEmail(10), "Qwerty123");
+        RequestBody requestBody = RequestBody.create(GSON.toJson(user), JSON);
+        Request request = new Request.Builder()
+                .url(BASE_URL+REGISTRATION_PATH)
+                .post(requestBody)
+                .build();
+        Response response;
+        try {
+            response = OK_HTTP_CLIENT.newCall(request).execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        ErrorMessageDto errorMessage = GSON.fromJson(response.body().string(), ErrorMessageDto.class);
+        softAssert.assertEquals(response.code(), 400);
+        softAssert.assertEquals(errorMessage.getStatus(), 400);
+        softAssert.assertEquals(errorMessage.getError(), "Bad Request");
+        softAssert.assertTrue(errorMessage.getMessage().toString().contains("password= At least 8 characters; Must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number;"));
+        System.out.println(errorMessage.getMessage().toString());
+        softAssert.assertAll();
     }
 }

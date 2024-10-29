@@ -34,4 +34,13 @@ public class DeleteContactTests extends ApplicationManager {
         System.out.println("--> " + quantityAfterDelete);
         Assert.assertEquals(quantityBeforeDelete - 1, quantityAfterDelete);
     }
+    @Test
+    public void deleteContactPositiveTest_validateQuantityListContact_lambdaExp(){
+        int quantityBeforeDelete = contactPage.getQuantityListContact();
+        System.out.println("quantityBeforeDelete-->"+quantityBeforeDelete);
+        contactPage.clickFirstElementOfContactsList();
+        contactPage.clickBtnRemoveContact();
+        //System.out.println("--> "+contactPage.getQuantityListContact());
+        Assert.assertTrue(contactPage.isElementDeleteFromContactList(quantityBeforeDelete));
+    }
 }

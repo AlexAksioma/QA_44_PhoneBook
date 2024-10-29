@@ -34,7 +34,7 @@ public class AddContactsTests extends ApplicationManager {
         addPage = clickButtonsOnHeader(HeaderMenuItem.ADD);
     }
 
-    @Test
+    @Test(invocationCount = 5)
     public void addNewContactPositiveTest() {
         ContactDtoLombok contact = ContactDtoLombok.builder()
                 .name(generateString(5))

@@ -17,14 +17,14 @@ public class DeleteContactTests extends ApplicationManager {
     UserDto user = new UserDto("qa_mail@mail.com", "Qwerty123!");
     ContactPage contactPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void login() {
         new HomePage(getDriver());
         LoginPage loginPage = clickButtonsOnHeader(HeaderMenuItem.LOGIN);
         contactPage = loginPage.typeLoginForm(user).clickBtnLoginPositive();
     }
 
-    @Test
+    @Test(groups = "smoke")
     public void deleteContactPositiveTest() {
         int quantityBeforeDelete = contactPage.getContactNumber();
         System.out.println("--> " + quantityBeforeDelete);

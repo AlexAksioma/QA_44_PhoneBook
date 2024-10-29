@@ -26,7 +26,7 @@ public class AddContactsTests extends ApplicationManager {
     UserDto user = new UserDto("qa_mail@mail.com", "Qwerty123!");
     AddPage addPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void login() {
         new HomePage(getDriver());
         LoginPage loginPage = clickButtonsOnHeader(HeaderMenuItem.LOGIN);
@@ -34,7 +34,7 @@ public class AddContactsTests extends ApplicationManager {
         addPage = clickButtonsOnHeader(HeaderMenuItem.ADD);
     }
 
-    @Test(invocationCount = 5)
+    @Test(groups = "smoke")
     public void addNewContactPositiveTest() {
         ContactDtoLombok contact = ContactDtoLombok.builder()
                 .name(generateString(5))

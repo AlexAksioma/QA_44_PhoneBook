@@ -26,14 +26,14 @@ public class EditContactsTests extends ApplicationManager {
             getProperty("data.properties","password"));
     ContactPage contactPage;
 
-    @BeforeMethod
+    @BeforeMethod(alwaysRun = true)
     public void login() {
         new HomePage(getDriver());
         LoginPage loginPage = clickButtonsOnHeader(HeaderMenuItem.LOGIN);
         contactPage = loginPage.typeLoginForm(user).clickBtnLoginPositive();
     }
 
-    @Test(retryAnalyzer = RetryAnalyzer.class)
+    @Test(retryAnalyzer = RetryAnalyzer.class, groups = "smoke")
     public void editContactPositiveTest(){
         ContactDtoLombok newContact = ContactDtoLombok.builder()
                 .name("new-"+generateString(5))
